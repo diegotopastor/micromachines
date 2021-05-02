@@ -17,16 +17,23 @@ class Game{
 			car: "img/cochesprite.png"
 		};
 
+		//coordenadas del coche, posición x,y y el ancho y el alto que ocupa cada imagen del coche en el sprite
 		this.spritecar = {
 			top: { x: 0, y: 0, width: 100, height:100 },
-			left: { x: 0, y: 0, width: 100, height:100 }
-			// ...
-		}
+			left: { x: 0, y: 0, width: 100, height:100 },
+			right: { x: 0, y: 0, width: 100, height:100 },
+			down: { x: 0, y: 0, width: 100, height:100 },
+			topRight: { x: 0, y: 0, width: 100, height:100 },
+			topLeft: { x: 0, y: 0, width: 100, height:100 },
+			downRight: { x: 0, y: 0, width: 100, height:100 },
+			downLeft: { x: 0, y: 0, width: 100, height:100 }
+		};
 
+		//datos que pueden ir cambiando como la dirección del coche, la velocidad
 		this.source = {
 			direction: "top",
 			speed: 1,
-			map_start: {x:10, y:10}
+			map_start: {x:10, y:10} //inicio de la posición del mapa
 		};
 
 		// 1º Tiene que 'registrar' el canvas con el this y darle el tamaño
