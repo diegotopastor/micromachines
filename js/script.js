@@ -11,7 +11,7 @@ class Game{
 		this.canvasSize = { width: 1000, height: 500 };
 
 		this.resources = {
-			audioinit: "src/audio.mp3",
+			//audioinit: "src/audio.mp3",
 			background: "img/mapafondo.png",
 			circuit: "img/circuito.png",
 			car: "img/cochesprite.png"
@@ -19,42 +19,52 @@ class Game{
 
 		//coordenadas del coche, posición x,y y el ancho y el alto que ocupa cada imagen del coche en el sprite
 		this.spritecar = {
-			top: { x: 0, y: 0, width: 100, height:100 },
-			left: { x: 0, y: 0, width: 100, height:100 },
-			right: { x: 0, y: 0, width: 100, height:100 },
-			down: { x: 0, y: 0, width: 100, height:100 },
-			topRight: { x: 0, y: 0, width: 100, height:100 },
-			topLeft: { x: 0, y: 0, width: 100, height:100 },
-			downRight: { x: 0, y: 0, width: 100, height:100 },
-			downLeft: { x: 0, y: 0, width: 100, height:100 }
+			top: { x: 0, y: 0, width: 55, height:74 },
+			topRight: { x: 58, y: 0, width: 74, height:74 },
+			right: { x: 138, y: 0, width: 58, height:74 },
+			downRight: { x: 199, y: 0, width: 72, height:74 },
+			down: { x: 280, y: 0, width: 56, height:74 },
+			downLeft: { x: 339, y: 0, width: 74, height:74 },
+			left: { x: 419, y: 0, width: 58, height:74 },
+			topLeft: { x: 480, y: 0, width: 74, height:74 }
 		};
 
 		//datos que pueden ir cambiando como la dirección del coche, la velocidad
 		this.source = {
 			direction: "top",
 			speed: 1,
-			map_start: {x:10, y:10} //inicio de la posición del mapa
+			map_start: {x: -1400, y: -1700}, //inicio de la posición del mapa
+			car_start: {x: 445, y: 210, width: 55, height: 74} //inicio posición del coche
 		};
 
 		// 1º Tiene que 'registrar' el canvas con el this y darle el tamaño
 
 			// Hace referencia a la etiqueta HTML <canvas>: Nos da los atributos de cualquier elemento html (tamaño, etc)
-			this.canvas = "";
-				// console.log(this.canvas);
-
+			this.canvas = document.getElementById("game");
+			this.canvas.width = this.canvasSize.width;
+			this.canvas.height = this.canvasSize.height;
+			
 			// Hace referencia al OBJETO canvas: Nos da funciones como "pintar"
-			this.canvasContext = "";
+			this.canvasContext = this.canvas.getContext("2d");
 
 		// CARGAR DATOS:
 			// Cargar el fondo en memoria: Lo guardamos en un this
+			this.imgBackground = new Image();
+			this.imgBackground.src = this.resources.background;
+
 			// Cargar el circuito en memoria: Lo guardamos en un this
+			this.imgCircuit = new Image();
+			this.imgCircuit.src = this.resources.circuit;
+
 			// Carga el coche en memoria: Lo guardamos en un this.
-
-
+			this.imgCar = new Image();
+			this.imgCar.src = this.resources.car;
 
 		// Llamamos a renderizar(); cuando fondo/coche estén cargados.
 			// this.renderizar();
-
+			this.imgCar.addEventListener('load', function(){
+				game.renderizar();
+			})
 
 	}
 
@@ -64,14 +74,29 @@ class Game{
 		// PEGAR EL MAPA EN EL CANVAS: SIN RENDERIZAR
 			// https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/drawImage
 			// https://www.w3schools.com/tags/canvas_drawimage.asp
+		
+			this.canvasContext.drawImage(this.imgBackground, this.source.map_start.x,this.source.map_start.y);
+			this.canvasContext.drawImage(this.imgCircuit,this.source.map_start.x,this.source.map_start.y);
 	}
 
 	pintaCoche(){
 		console.log("pintando coche...");
+
 		// PEGAR EL COCHE
 			// https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/drawImage
 			// https://www.w3schools.com/tags/canvas_drawimage.asp
 
+			this.canvasContext.drawImage(
+				this.imgCar,
+				this.spritecar.top.x,
+				this.spritecar.top.y,
+				this.spritecar.top.width,
+				this.spritecar.top.height,
+				this.source.car_start.x,
+				this.source.car_start.y,
+				this.source.car_start.width,
+				this.source.car_start.height				
+			);	
 	}
 
 	renderizar(){
@@ -87,6 +112,8 @@ class Game{
 window.onload = function(){
 	game = new Game();
 }
+
+
 
 class Teclado{
 	constructor(){
