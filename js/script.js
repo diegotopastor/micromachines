@@ -62,10 +62,12 @@ class Game{
 
 		// Llamamos a renderizar(); cuando fondo/coche estén cargados.
 			// this.renderizar();
-			this.imgCar.addEventListener('load', function(){
-				game.renderizar();
-			})
+			this.imgCircuit.addEventListener('load', ()=>{
+				this.renderizar();
+			});
 
+		//  ME EJECUTES 10 veces por segundo la función renderizar
+			
 	}
 
 	pintaMapa(){
@@ -88,18 +90,29 @@ class Game{
 
 			this.canvasContext.drawImage(
 				this.imgCar,
-				this.spritecar.top.x,
-				this.spritecar.top.y,
-				this.spritecar.top.width,
-				this.spritecar.top.height,
+				this.spritecar[this.source.direction].x,
+				this.spritecar[this.source.direction].y,
+				this.spritecar[this.source.direction].width,
+				this.spritecar[this.source.direction].height,
 				this.source.car_start.x,
 				this.source.car_start.y,
 				this.source.car_start.width,
 				this.source.car_start.height				
-			);	
+			);
+		console.log(this.spritecar[this.source.direction].x);	
+	}
+
+	 avanza_coche(){
+
+		// 1º Recogemos this.source.direction
+
+		// Y con un IF (o muchos), sumamos o restamos a this.source.map_start
+
 	}
 
 	renderizar(){
+
+		this.avanza_coche();
 
 		this.pintaMapa();
 
@@ -118,12 +131,32 @@ window.onload = function(){
 class Teclado{
 	constructor(){
 
+		this.letters = {
+			ArrowLeft: false,
+			ArrowRight: false,
+			ArrowUp: false,
+			ArrowDown: false
+		};
+
+		// Hacia abajo
+		document.onkeydown = (e) => {
+			// Cambiamos el objeto letters
+
+			// Ejecutamos el método save_position()
+		}
+
+		// Hacia arriba
+
 	}
 
-	arriba(){}
-	abajo(){}
-	derecha(){}
-	izquierda(){}
-	//las diagonales??
+	save_position(){
+
+		// 1º Recogemos el this.letters
+
+		// 2º Dependiendo los true/false guardamos una posición u otra en
+			// game.source.direction
+	}
 
 }
+
+var teclado = new Teclado;
