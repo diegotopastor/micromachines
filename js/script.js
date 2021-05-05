@@ -67,6 +67,8 @@ class Game{
 			});
 
 		//  ME EJECUTES 10 veces por segundo la función renderizar
+			//setInterval(this.renderizar(), 1000);
+			
 			
 	}
 
@@ -99,11 +101,10 @@ class Game{
 				this.source.car_start.width,
 				this.source.car_start.height				
 			);
-		console.log(this.spritecar[this.source.direction].x);	
 	}
 
-	 avanza_coche(){
-
+	avanza_coche(){
+		console.log("funcion avanza_coche");
 		// 1º Recogemos this.source.direction
 
 		// Y con un IF (o muchos), sumamos o restamos a this.source.map_start
@@ -112,11 +113,114 @@ class Game{
 
 	renderizar(){
 
-		this.avanza_coche();
-
 		this.pintaMapa();
 
 		this.pintaCoche();
+
+		this.avanza_coche();
+
+	}
+
+}
+
+class Teclado{
+	constructor(){
+		
+		this.letters = {
+			ArrowLeft: false,
+			ArrowRight: false,
+			ArrowUp: false,
+			ArrowDown: false
+		};
+		
+		//Controlamos que tecla de dirección se ha pulsado y la ponemos a true
+		document.onkeydown = (e) => {
+
+			var e = e || window.event;
+
+			if(e.key == "ArrowLeft"){
+				this.letters.ArrowLeft = true;
+			}
+
+			if(e.key == "ArrowRight"){
+				this.letters.ArrowRight = true;
+			}
+
+			if(e.key == "ArrowUp"){
+				this.letters.ArrowUp = true;
+			}
+
+			if(e.key == "ArrowDown"){
+				this.letters.ArrowDown = true;
+			}			
+
+			// Ejecutamos el método
+			this.save_position();
+		}
+
+		document.onkeyup = (e) => {
+
+			var e = e || window.event;
+
+			if(e.key == "ArrowLeft"){
+				this.letters.ArrowLeft = false;
+			}
+
+			if(e.key == "ArrowRight"){
+				this.letters.ArrowRight = false;
+			}
+
+			if(e.key == "ArrowUp"){
+				this.letters.ArrowUp = false;
+			}
+
+			if(e.key == "ArrowDown"){
+				this.letters.ArrowDown = false;
+			}			
+
+			// Ejecutamos el método
+			this.save_position();
+		}		
+
+	}
+
+	save_position(letters){
+		
+		// 1º Recogemos el this.letters
+		let tecla = this.letters;
+		// 2º Dependiendo los true/false guardamos una posición u otra en
+			// game.source.direction
+			if(tecla.ArrowLeft){
+				game.source.direction = "left";
+			}
+
+			if(tecla.ArrowRight){
+				game.source.direction = "right";
+			}
+
+			if(tecla.ArrowUp){
+				game.source.direction = "top";
+			}
+
+			if(tecla.ArrowDown){
+				game.source.direction = "down";
+			}
+
+			if(tecla.ArrowLeft && tecla.ArrowUp){
+				game.source.direction = "topLeft";
+			}
+
+			if(tecla.ArrowLeft && tecla.ArrowDown){
+				game.source.direction = "downLeft";
+			}
+
+			if(tecla.ArrowRight && tecla.ArrowUp){
+				game.source.direction = "topRight";
+			}
+
+			if(tecla.ArrowRight && tecla.ArrowDown){
+				game.source.direction = "downRight";
+			}
 
 	}
 
@@ -124,39 +228,6 @@ class Game{
 
 window.onload = function(){
 	game = new Game();
+	teclado = new Teclado;
 }
 
-
-
-class Teclado{
-	constructor(){
-
-		this.letters = {
-			ArrowLeft: false,
-			ArrowRight: false,
-			ArrowUp: false,
-			ArrowDown: false
-		};
-
-		// Hacia abajo
-		document.onkeydown = (e) => {
-			// Cambiamos el objeto letters
-
-			// Ejecutamos el método save_position()
-		}
-
-		// Hacia arriba
-
-	}
-
-	save_position(){
-
-		// 1º Recogemos el this.letters
-
-		// 2º Dependiendo los true/false guardamos una posición u otra en
-			// game.source.direction
-	}
-
-}
-
-var teclado = new Teclado;
