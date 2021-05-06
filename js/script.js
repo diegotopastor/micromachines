@@ -5,6 +5,18 @@
  * Nos podemos chocar, o ralentizar o acelerar la marcha según el obstáculo.
  */
 
+
+/*
+	Para la siguiente clase:
+	- Detectar siguiente pixel
+	- Si es negro, corre el doble,
+	- Si es rojo, corre normal
+	- Si es blanco, corre la mitad
+	- Si es verde, sale un alert ¡Has ganado!
+	- Si es azul: El coche se para
+*/
+
+
 class Game{
 	constructor(){
 
@@ -32,7 +44,7 @@ class Game{
 		//datos que pueden ir cambiando como la dirección del coche, la velocidad
 		this.source = {
 			direction: "top",
-			speed: 1,
+			speed: 5,
 			map_start: {x: -1400, y: -1700}, //inicio de la posición del mapa
 			car_start: {x: 445, y: 210, width: 55, height: 74} //inicio posición del coche
 		};
@@ -46,6 +58,16 @@ class Game{
 			
 			// Hace referencia al OBJETO canvas: Nos da funciones como "pintar"
 			this.canvasContext = this.canvas.getContext("2d");
+
+
+			// Hace referencia a la etiqueta HTML <canvas>: Nos da los atributos de cualquier elemento html (tamaño, etc)
+			this.canvasbg = document.getElementById("background");
+			this.canvasbg.width = this.canvasSize.width;
+			this.canvasbg.height = this.canvasSize.height;
+			
+			// Hace referencia al OBJETO canvas: Nos da funciones como "pintar"
+			this.canvasbgContext = this.canvasbg.getContext("2d");
+
 
 		// CARGAR DATOS:
 			// Cargar el fondo en memoria: Lo guardamos en un this
@@ -78,8 +100,7 @@ class Game{
 		// PEGAR EL MAPA EN EL CANVAS: SIN RENDERIZAR
 			// https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/drawImage
 			// https://www.w3schools.com/tags/canvas_drawimage.asp
-		
-			this.canvasContext.drawImage(this.imgBackground, this.source.map_start.x,this.source.map_start.y);
+			this.canvasbgContext.drawImage(this.imgBackground, this.source.map_start.x,this.source.map_start.y);
 			this.canvasContext.drawImage(this.imgCircuit,this.source.map_start.x,this.source.map_start.y);
 	}
 
@@ -145,13 +166,26 @@ class Game{
 		}
 	}
 
+	nextPixel(){
+
+		// Jugaremos con el pixel de canvasbgcontext
+		// https://www.w3schools.com/tags/canvas_getimagedata.asp
+		// https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_canvas_getimagedata_firstpx
+
+		return false;
+	}
+
 	renderizar(){
 
 		this.pintaMapa();
 
 		this.pintaCoche();
 
-		this.avanza_coche();
+		var status = this.nextPixel();
+
+		if(status){
+			this.avanza_coche();
+		}
 
 	}
 
@@ -172,21 +206,13 @@ class Teclado{
 
 			var e = e || window.event;
 
-			if(e.key == "ArrowLeft"){
-				this.letters.ArrowLeft = true;
-			}
+			if(e.key == "ArrowLeft"){ this.letters.ArrowLeft = true; }
 
-			if(e.key == "ArrowRight"){
-				this.letters.ArrowRight = true;
-			}
+			if(e.key == "ArrowRight"){ this.letters.ArrowRight = true; }
 
-			if(e.key == "ArrowUp"){
-				this.letters.ArrowUp = true;
-			}
+			if(e.key == "ArrowUp"){ this.letters.ArrowUp = true; }
 
-			if(e.key == "ArrowDown"){
-				this.letters.ArrowDown = true;
-			}			
+			if(e.key == "ArrowDown"){ this.letters.ArrowDown = true; }			
 
 			// Ejecutamos el método
 			this.save_direction();
@@ -196,21 +222,13 @@ class Teclado{
 
 			var e = e || window.event;
 
-			if(e.key == "ArrowLeft"){
-				this.letters.ArrowLeft = false;
-			}
+			if(e.key == "ArrowLeft"){ this.letters.ArrowLeft = false; }
 
-			if(e.key == "ArrowRight"){
-				this.letters.ArrowRight = false;
-			}
+			if(e.key == "ArrowRight"){ this.letters.ArrowRight = false; }
 
-			if(e.key == "ArrowUp"){
-				this.letters.ArrowUp = false;
-			}
+			if(e.key == "ArrowUp"){ this.letters.ArrowUp = false; }
 
-			if(e.key == "ArrowDown"){
-				this.letters.ArrowDown = false;
-			}			
+			if(e.key == "ArrowDown"){ this.letters.ArrowDown = false; }			
 
 			// Ejecutamos el método
 			this.save_direction();
@@ -224,37 +242,21 @@ class Teclado{
 		let tecla = this.letters;
 		// 2º Dependiendo los true/false guardamos una posición u otra en
 			// game.source.direction
-			if(tecla.ArrowLeft){
-				game.source.direction = "left";
-			}
+			if(tecla.ArrowLeft){ game.source.direction = "left"; }
 
-			if(tecla.ArrowRight){
-				game.source.direction = "right";
-			}
+			if(tecla.ArrowRight){ game.source.direction = "right"; }
 
-			if(tecla.ArrowUp){
-				game.source.direction = "top";
-			}
+			if(tecla.ArrowUp){ game.source.direction = "top"; }
 
-			if(tecla.ArrowDown){
-				game.source.direction = "down";
-			}
+			if(tecla.ArrowDown){ game.source.direction = "down"; }
 
-			if(tecla.ArrowLeft && tecla.ArrowUp){
-				game.source.direction = "topLeft";
-			}
+			if(tecla.ArrowLeft && tecla.ArrowUp){ game.source.direction = "topLeft"; }
 
-			if(tecla.ArrowLeft && tecla.ArrowDown){
-				game.source.direction = "downLeft";
-			}
+			if(tecla.ArrowLeft && tecla.ArrowDown){ game.source.direction = "downLeft"; }
 
-			if(tecla.ArrowRight && tecla.ArrowUp){
-				game.source.direction = "topRight";
-			}
+			if(tecla.ArrowRight && tecla.ArrowUp){ game.source.direction = "topRight"; }
 
-			if(tecla.ArrowRight && tecla.ArrowDown){
-				game.source.direction = "downRight";
-			}
+			if(tecla.ArrowRight && tecla.ArrowDown){ game.source.direction = "downRight"; }
 
 	}
 
