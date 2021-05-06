@@ -67,14 +67,14 @@ class Game{
 			});
 
 		//  ME EJECUTES 10 veces por segundo la función renderizar
-			//setInterval(this.renderizar(), 1000);
-			
+			setInterval(()=>{
+				this.renderizar();
+				}, 100);
 			
 	}
 
 	pintaMapa(){
-		console.log("pintando mapa...");
-
+		
 		// PEGAR EL MAPA EN EL CANVAS: SIN RENDERIZAR
 			// https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/drawImage
 			// https://www.w3schools.com/tags/canvas_drawimage.asp
@@ -84,7 +84,6 @@ class Game{
 	}
 
 	pintaCoche(){
-		console.log("pintando coche...");
 
 		// PEGAR EL COCHE
 			// https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/drawImage
@@ -104,11 +103,46 @@ class Game{
 	}
 
 	avanza_coche(){
-		console.log("funcion avanza_coche");
+		
 		// 1º Recogemos this.source.direction
-
+		let direction = this.source.direction;
+		
 		// Y con un IF (o muchos), sumamos o restamos a this.source.map_start
+		if(direction == "top"){
+			this.source.map_start.y += 5;
+		}
 
+		if(direction == "down"){
+			this.source.map_start.y -= 5;
+		}
+
+		if(direction == "right"){
+			this.source.map_start.x -= 5;
+		}
+
+		if(direction == "left"){
+			this.source.map_start.x += 5;
+		}
+
+		if(direction == "topLeft"){
+			this.source.map_start.x += 5;
+			this.source.map_start.y += 5;
+		}
+
+		if(direction == "topRight"){
+			this.source.map_start.x -= 5;
+			this.source.map_start.y += 5;
+		}
+
+		if(direction == "downLeft"){
+			this.source.map_start.x += 5;
+			this.source.map_start.y -= 5;
+		}
+
+		if(direction == "downRight"){
+			this.source.map_start.x -= 5;
+			this.source.map_start.y -= 5;
+		}
 	}
 
 	renderizar(){
@@ -155,7 +189,7 @@ class Teclado{
 			}			
 
 			// Ejecutamos el método
-			this.save_position();
+			this.save_direction();
 		}
 
 		document.onkeyup = (e) => {
@@ -179,12 +213,12 @@ class Teclado{
 			}			
 
 			// Ejecutamos el método
-			this.save_position();
+			this.save_direction();
 		}		
 
 	}
 
-	save_position(letters){
+	save_direction(){
 		
 		// 1º Recogemos el this.letters
 		let tecla = this.letters;
