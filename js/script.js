@@ -13,7 +13,7 @@
 	- Si es rojo, corre normal
 	- Si es blanco, corre la mitad
 	- Si es verde, sale un alert ¡Has ganado!
-	- Si es azul: El coche se para
+	- Si es azul: El coche se para.
 */
 
 
