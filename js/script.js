@@ -9,11 +9,11 @@
 /*
 	Para la siguiente clase:
 	- Detectar siguiente pixel
-	- Si es negro, corre el doble,
-	- Si es rojo, corre normal
-	- Si es blanco, corre la mitad
-	- Si es verde, sale un alert ¡Has ganado!
-	- Si es azul: El coche se para.
+	- Si es negro, corre el doble, #000000 - 0,0,0
+	- Si es rojo, corre normal  #ED1B23 - 237,28,36
+	- Si es blanco, corre la mitad #FFFFFF - 255,255,255
+	- Si es verde, sale un alert ¡Has ganado! #3ED201 - 63,210,0
+	- Si es azul: El coche se para. #3F49CC - 63,73,204
 */
 
 
@@ -31,14 +31,14 @@ class Game{
 
 		//coordenadas del coche, posición x,y y el ancho y el alto que ocupa cada imagen del coche en el sprite
 		this.spritecar = {
-			top: { x: 0, y: 0, width: 55, height:74 },
-			topRight: { x: 58, y: 0, width: 74, height:74 },
-			right: { x: 138, y: 0, width: 58, height:74 },
-			downRight: { x: 199, y: 0, width: 72, height:74 },
-			down: { x: 280, y: 0, width: 56, height:74 },
-			downLeft: { x: 339, y: 0, width: 74, height:74 },
-			left: { x: 419, y: 0, width: 58, height:74 },
-			topLeft: { x: 480, y: 0, width: 74, height:74 }
+			top: { x: 0, y: 0, width: 27, height: 37 },
+			topRight: { x: 30, y: 0, width: 36, height: 37 },
+			right: { x: 70,  y: 0, width: 27, height: 37 },
+			downRight: { x: 100, y: 0, width: 35, height: 37 },
+			down: { x: 140, y: 0, width: 28, height: 37 },
+			downLeft: { x: 170, y: 0, width: 36, height: 37 },
+			left: { x: 210, y: 0, width: 28, height: 37 },
+			topLeft: { x: 240, y: 0, width: 36, height: 37 }
 		};
 
 		//datos que pueden ir cambiando como la dirección del coche, la velocidad
@@ -46,7 +46,12 @@ class Game{
 			direction: "top",
 			speed: 5,
 			map_start: {x: -1400, y: -1700}, //inicio de la posición del mapa
-			car_start: {x: 445, y: 210, width: 55, height: 74} //inicio posición del coche
+			car_start: {x: 460, y: 220, width: 27, height: 37}, //inicio posición del coche
+			pixel_red: {r:237, g:28 ,b:36},
+			pixel_green: {r:63, g:210 ,b:0},
+			pixel_blue: {r:63, g:73 ,b:204},
+			pixel_black: {r:0, g:0 ,b:0},
+			pixel_white: {r:255, g:255 ,b:255}
 		};
 
 		// 1º Tiene que 'registrar' el canvas con el this y darle el tamaño
@@ -130,39 +135,39 @@ class Game{
 		
 		// Y con un IF (o muchos), sumamos o restamos a this.source.map_start
 		if(direction == "top"){
-			this.source.map_start.y += 5;
+			this.source.map_start.y += this.source.speed;
 		}
 
 		if(direction == "down"){
-			this.source.map_start.y -= 5;
+			this.source.map_start.y -= this.source.speed;
 		}
 
 		if(direction == "right"){
-			this.source.map_start.x -= 5;
+			this.source.map_start.x -= this.source.speed;
 		}
 
 		if(direction == "left"){
-			this.source.map_start.x += 5;
+			this.source.map_start.x += this.source.speed;
 		}
 
 		if(direction == "topLeft"){
-			this.source.map_start.x += 5;
-			this.source.map_start.y += 5;
+			this.source.map_start.x += this.source.speed;
+			this.source.map_start.y += this.source.speed;
 		}
 
 		if(direction == "topRight"){
-			this.source.map_start.x -= 5;
-			this.source.map_start.y += 5;
+			this.source.map_start.x -= this.source.speed;
+			this.source.map_start.y += this.source.speed;
 		}
 
 		if(direction == "downLeft"){
-			this.source.map_start.x += 5;
-			this.source.map_start.y -= 5;
+			this.source.map_start.x += this.source.speed;
+			this.source.map_start.y -= this.source.speed;
 		}
 
 		if(direction == "downRight"){
-			this.source.map_start.x -= 5;
-			this.source.map_start.y -= 5;
+			this.source.map_start.x -= this.source.speed;
+			this.source.map_start.y -= this.source.speed;
 		}
 	}
 
@@ -172,7 +177,60 @@ class Game{
 		// https://www.w3schools.com/tags/canvas_getimagedata.asp
 		// https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_canvas_getimagedata_firstpx
 
-		return false;
+		let pixel;
+
+		//obtenemos las cordenadas del pixel segun la dirección del coche
+		switch(this.source.direction){
+			case "top":
+				pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y,1,1);
+				break;
+			case "down":
+				pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y-this.source.car_start.height-1,1,1);
+				break;
+			case "left":
+				pixel = this.canvasbgContext.getImageData((this.source.car_start.x),this.source.car_start.y/2,1,1);
+				break;
+			case "right":
+				pixel = this.canvasbgContext.getImageData((this.source.car_start.x+this.source.car_start.width),this.source.car_start.y/2,1,1);
+				break;
+			// case "topLeft":
+			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y+1,1,1);
+			// 	break;
+			// case "topRight":
+			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y+1,1,1);
+			// 	break;
+			// case "downLeft":
+			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y+1,1,1);
+			// 	break;
+			// case "downRight":
+			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y+1,1,1);
+			// 	break;
+				
+		}
+		
+		let red = pixel.data[0];
+		let green = pixel.data[1];
+		let blue = pixel.data[2];
+		
+		//comprobamos los valores RGB del pixel en el siguiente orden:
+		//Rojo, Azul, Negro, Blanco y Verde
+		if(red == this.source.pixel_red.r && green == this.source.pixel_red.g && blue == this.source.pixel_red.b){
+			return true;
+		}else if(red == this.source.pixel_blue.r && green == this.source.pixel_blue.g && blue == this.source.pixel_blue.b){
+			return false;
+		}else if(red == this.source.pixel_black.r && green == this.source.pixel_black.g && blue == this.source.pixel_black.b){
+			this.source.speed *= 2;
+			return true;
+		}else if(red == this.source.pixel_white.r && green == this.source.pixel_white.g && blue == this.source.pixel_white.b){
+			this.source.speed *= 0.5;
+			return true;
+		}else if(red == this.source.pixel_green.r && green == this.source.pixel_green.g && blue == this.source.pixel_green.b){
+			//alert("Has ganado!!");
+			return true;
+		}
+		
+		console.log(red,green,blue);
+		
 	}
 
 	renderizar(){
