@@ -49,7 +49,7 @@ class Game{
 			car_start: {x: 460, y: 220, width: 27, height: 37}, //inicio posición del coche
 			pixel_red: {r:237, g:28 ,b:36},
 			pixel_green: {r:63, g:210 ,b:0},
-			pixel_blue: {r:63, g:73 ,b:204},
+			pixel_blue: {r:63, g:72 ,b:204},
 			pixel_black: {r:0, g:0 ,b:0},
 			pixel_white: {r:255, g:255 ,b:255}
 		};
@@ -96,7 +96,7 @@ class Game{
 		//  ME EJECUTES 10 veces por segundo la función renderizar
 			setInterval(()=>{
 				this.renderizar();
-				}, 100);
+				}, 10);
 			
 	}
 
@@ -176,23 +176,27 @@ class Game{
 		// Jugaremos con el pixel de canvasbgcontext
 		// https://www.w3schools.com/tags/canvas_getimagedata.asp
 		// https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_canvas_getimagedata_firstpx
+		const car_start = this.source.car_start;
+		const contx = this.canvasbgContext;
 
-		let pixel;
+		let pixel = {};
 
 		//obtenemos las cordenadas del pixel segun la dirección del coche
 		switch(this.source.direction){
 			case "top":
-				pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y,1,1);
+				pixel.x = parseInt(car_start.x+car_start.width/2);
+				pixel.y = car_start.y;
 				break;
 			case "down":
-				pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y-this.source.car_start.height-1,1,1);
-				break;
-			case "left":
-				pixel = this.canvasbgContext.getImageData((this.source.car_start.x),this.source.car_start.y/2,1,1);
-				break;
-			case "right":
-				pixel = this.canvasbgContext.getImageData((this.source.car_start.x+this.source.car_start.width),this.source.car_start.y/2,1,1);
-				break;
+				pixel.x = parseInt(car_start.x+car_start.width/2);
+				pixel.y = car_start.y-car_start.height;
+			 	break;
+			// case "left":
+			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x),this.source.car_start.y/2,1,1);
+			// 	break;
+			// case "right":
+			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x+this.source.car_start.width),this.source.car_start.y/2,1,1);
+			// 	break;
 			// case "topLeft":
 			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y+1,1,1);
 			// 	break;
@@ -205,31 +209,52 @@ class Game{
 			// case "downRight":
 			// 	pixel = this.canvasbgContext.getImageData((this.source.car_start.x/2),this.source.car_start.y+1,1,1);
 			// 	break;
-				
 		}
 		
+		pixel = contx.getImageData(pixel.x, pixel.y, 1, 1);
+
 		let red = pixel.data[0];
 		let green = pixel.data[1];
 		let blue = pixel.data[2];
+
+		let detectRGB = "rgb("+red+","+green+","+blue+")";
+
 		
-		//comprobamos los valores RGB del pixel en el siguiente orden:
-		//Rojo, Azul, Negro, Blanco y Verde
-		if(red == this.source.pixel_red.r && green == this.source.pixel_red.g && blue == this.source.pixel_red.b){
-			return true;
-		}else if(red == this.source.pixel_blue.r && green == this.source.pixel_blue.g && blue == this.source.pixel_blue.b){
-			return false;
-		}else if(red == this.source.pixel_black.r && green == this.source.pixel_black.g && blue == this.source.pixel_black.b){
-			this.source.speed *= 2;
-			return true;
-		}else if(red == this.source.pixel_white.r && green == this.source.pixel_white.g && blue == this.source.pixel_white.b){
-			this.source.speed *= 0.5;
-			return true;
-		}else if(red == this.source.pixel_green.r && green == this.source.pixel_green.g && blue == this.source.pixel_green.b){
-			//alert("Has ganado!!");
-			return true;
-		}
-		
-		console.log(red,green,blue);
+//		console.log(red,green,blue);
+		// DEBUG
+		document.getElementsByTagName("body")[0].style.backgroundColor="rgb("+red+","+green+","+blue+")";
+
+
+
+
+		/**
+		 * CONTROL DE VELOCIDAD
+		*/
+			//comprobamos los valores RGB del pixel en el siguiente orden:
+			//Rojo, Azul, Negro, Blanco y Verde
+
+			const colorRed = this.source.pixel_red;
+			const colorBlue = this.source.pixel_blue;
+			const colorBlack = this.source.pixel_black;
+			const colorWhite = this.source.pixel_white;
+			const colorGreen = this.source.pixel_green;
+
+			// Blue: STOP
+			if(red == colorBlue.r && green == colorBlue.g && blue == colorBlue.b){ return false; }
+
+			// Rojo: Todo OK
+			if(red == colorRed.r && green == colorRed.g && blue == colorRed.b){ this.source.speed = 1; }
+
+			// Black: Oil
+			if(red == colorBlack.r && green == colorBlack.g && blue == colorBlack.b){ this.source.speed = 3; }
+			
+			// White: Pegamento
+			if(red == colorWhite.r && green == colorWhite.g && blue == colorWhite.b){ this.source.speed = 1; }
+
+			// Meta
+			if(red == colorGreen.r && green == colorGreen.g && blue == colorGreen.b){ /* alert("Has ganado!!"); */ }
+
+		return true;
 		
 	}
 
