@@ -51,7 +51,6 @@ class Game{
 			pixel_blue: {r:63, g:72 ,b:204},
 			pixel_black: {r:0, g:0 ,b:0},
 			pixel_white: {r:255, g:255 ,b:255},
-			start: true,
 			lap: 0,
 			finish: 3
 		};
@@ -255,22 +254,22 @@ class Game{
 			// White: Pegamento
 			if(red == colorWhite.r && green == colorWhite.g && blue == colorWhite.b){ this.source.speed = 2; }
 
-			// Meta
-			const start = this.source.start;
+			// Verde: Meta
 			const finish = this.source.finish;
 
 			if(red == colorGreen.r && green == colorGreen.g && blue == colorGreen.b){
-				if(start){
+				//Detectamos la dirección del coche para contar las vueltas
+				if(this.source.direction == "top"){
 					if(this.source.lap<finish){
 						this.source.lap+=1;
-						console.log(this.source.lap);
 					}else{
-						alert("Has ganado!!");
+						//alert("Has ganado!!");
+						console.log("<< F I N I S H >>");
 						return false;
 					}
-				}				
-		
-			 }
+				}
+					
+			}
 
 		return true;
 		
