@@ -23,7 +23,6 @@ class Game{
 		this.canvasSize = { width: 1000, height: 500 };
 
 		this.resources = {
-			//audioinit: "src/audio.mp3",
 			background: "img/mapafondo.png",
 			circuit: "img/circuito.png",
 			car: "img/cochesprite.png"
@@ -46,12 +45,15 @@ class Game{
 			direction: "top",
 			speed: 5,
 			map_start: {x: -1400, y: -1700}, //inicio de la posición del mapa
-			car_start: {x: 460, y: 220, width: 27, height: 37}, //inicio posición del coche
+			car_start: {x: 460, y: 200, width: 27, height: 37}, //inicio posición del coche
 			pixel_red: {r:237, g:28 ,b:36},
 			pixel_green: {r:63, g:210 ,b:0},
 			pixel_blue: {r:63, g:72 ,b:204},
 			pixel_black: {r:0, g:0 ,b:0},
-			pixel_white: {r:255, g:255 ,b:255}
+			pixel_white: {r:255, g:255 ,b:255},
+			start: true,
+			lap: 0,
+			finish: 3
 		};
 
 		// 1º Tiene que 'registrar' el canvas con el this y darle el tamaño
@@ -180,25 +182,23 @@ class Game{
 
 		let pixel = {};
 
-		//obtenemos las cordenadas del pixel segun la dirección del coche
+		//obtenemos las cordenadas del pixel según la dirección del coche
 		switch(this.source.direction){
 			case "top":
 				pixel.x = parseInt(car_start.x+car_start.width/2);
 				pixel.y = car_start.y;
-				console.log(pixel.x,pixel.y);
 				break;
 			case "down":
 				pixel.x = parseInt(car_start.x+car_start.width/2);
 				pixel.y = car_start.y+parseInt(car_start.height/2);
-				console.log(pixel.x,pixel.y);
-			 	break;
+					break;
 			case "left":
 				pixel.x = car_start.x;
-				pixel.y = parseInt(car_start.y-car_start.height/2);
+				pixel.y = parseInt(car_start.y+car_start.height/2);
 				break;
 			case "right":
 				pixel.x = car_start.x+car_start.width;
-				pixel.y = parseInt(car_start.y-car_start.height/2);
+				pixel.y = parseInt(car_start.y+car_start.height/2);
 				break;
 			case "topLeft":
 				pixel.x = parseInt(car_start.x+car_start.width/2);
@@ -210,15 +210,13 @@ class Game{
 				break;
 			case "downLeft":
 				pixel.x = parseInt(car_start.x+car_start.width/2);
-				pixel.y = car_start.y-car_start.height;
-			 	break;
+				pixel.y = car_start.y+car_start.height;
+				break;
 			case "downRight":
 				pixel.x = parseInt(car_start.x+car_start.width/2);
-				pixel.y = car_start.y-car_start.height;
-			 	break;
+				pixel.y = car_start.y+car_start.height;
+				break;
 		}		
-
-		
 
 		pixel = contx.getImageData(pixel.x, pixel.y, 1, 1);		
 
@@ -252,13 +250,27 @@ class Game{
 			if(red == colorRed.r && green == colorRed.g && blue == colorRed.b){ this.source.speed = 5; }
 
 			// Black: Oil
-			if(red == colorBlack.r && green == colorBlack.g && blue == colorBlack.b){ this.source.speed = 10; }
+			if(red == colorBlack.r && green == colorBlack.g && blue == colorBlack.b){ this.source.speed = 15; }
 			
 			// White: Pegamento
 			if(red == colorWhite.r && green == colorWhite.g && blue == colorWhite.b){ this.source.speed = 2; }
 
 			// Meta
-			if(red == colorGreen.r && green == colorGreen.g && blue == colorGreen.b){ /* alert("Has ganado!!"); */ }
+			const start = this.source.start;
+			const finish = this.source.finish;
+
+			if(red == colorGreen.r && green == colorGreen.g && blue == colorGreen.b){
+				if(start){
+					if(this.source.lap<finish){
+						this.source.lap+=1;
+						console.log(this.source.lap);
+					}else{
+						alert("Has ganado!!");
+						return false;
+					}
+				}				
+		
+			 }
 
 		return true;
 		
