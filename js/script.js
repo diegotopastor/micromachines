@@ -95,9 +95,11 @@ class Game{
 			});
 
 		//  Ejecutamos la función renderizar cada 10ms
-			setInterval(()=>{
+			var algo = setInterval(()=>{
 				this.renderizar();
 				}, 100);
+
+			console.log(algo);
 			
 	}
 
@@ -265,6 +267,7 @@ class Game{
 					}else{
 						//alert("Has ganado!!");
 						console.log("<< F I N I S H >>");
+						//clearInterval(algo);
 						return false;
 					}
 				}
