@@ -95,12 +95,9 @@ class Game{
 			});
 
 		//  Ejecutamos la función renderizar cada 10ms
-			var algo = setInterval(()=>{
+			this.endGame = setInterval(()=>{
 				this.renderizar();
-				}, 100);
-
-			console.log(algo);
-			
+				}, 100);			
 	}
 
 	pintaMapa(){
@@ -230,7 +227,7 @@ class Game{
 		//console.log(red,green,blue);
 
 		// DEBUG - muestra el body en el color del pixel que detecta según las coordenadas
-		document.getElementsByTagName("body")[0].style.backgroundColor="rgb("+red+","+green+","+blue+")";
+		//document.getElementsByTagName("body")[0].style.backgroundColor="rgb("+red+","+green+","+blue+")";
 
 		/**
 		 * CONTROL DE VELOCIDAD
@@ -265,9 +262,9 @@ class Game{
 					if(this.source.lap<finish){
 						this.source.lap+=1;
 					}else{
-						//alert("Has ganado!!");
+						alert("Has ganado!!");
 						console.log("<< F I N I S H >>");
-						//clearInterval(algo);
+						clearInterval(this.endGame);
 						return false;
 					}
 				}
