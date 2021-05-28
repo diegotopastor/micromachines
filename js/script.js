@@ -97,7 +97,7 @@ class Game{
 		//  Ejecutamos la función renderizar cada 10ms
 			this.endGame = setInterval(()=>{
 				this.renderizar();
-				}, 100);			
+				}, 30);			
 	}
 
 	pintaMapa(){
@@ -262,9 +262,9 @@ class Game{
 					if(this.source.lap<finish){
 						this.source.lap+=1;
 					}else{
+						clearInterval(this.endGame);
 						alert("Has ganado!!");
 						console.log("<< F I N I S H >>");
-						clearInterval(this.endGame);
 						return false;
 					}
 				}

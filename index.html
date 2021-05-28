@@ -9,8 +9,14 @@
 	<title>Micromachines</title>
 </head>
 <body>
-	<canvas id="game"></canvas>
-	<canvas id="background"></canvas>	
+	<div class="container">
+		<h1>Micromachines 1992</h1>
+		<p>Vueltas: <span id="lap">0</span></p>
+		<canvas id="game"></canvas>
+		<canvas id="background"></canvas>
+		<br>
+		<button class="btnscreen" onClick="document.getElementById('game').requestFullscreen();">Pantalla completa</button>
+	</div>
 	
 </body>
 </html>
