@@ -261,6 +261,7 @@ class Game{
 				if(this.source.direction == "top"){
 					if(this.source.lap<finish){
 						this.source.lap+=1;
+						document.getElementById("lap").innerHTML=this.source.lap
 					}else{
 						clearInterval(this.endGame);
 						alert("Has ganado!!");
